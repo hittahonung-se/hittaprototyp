@@ -113,6 +113,7 @@
         }
 
     </style>
+    <script src="tags.js"></script>
 </head>
 <body>
 <header>
@@ -126,12 +127,12 @@
         </ul>
     </nav>
 </header>
-<form action="#">
+<form method="get" action="results.html">
     <label>Var vill du hitta honung?<br><input type="text"></label>
     <fieldset>
         <label>
             Försäljning:
-            <select name="tags">
+            <select id="tags-sales-method" name="tags">
                 <option value="apple">Apple</option>
                 <option value="banana">Banana</option>
                 <option value="cherry">Cherry</option>
@@ -140,7 +141,7 @@
         </label>
         <label>
             Sort:
-            <select name="tags">
+            <select id="tags-type" name="tags">
                 <option value="apple">Apple</option>
                 <option value="banana">Banana</option>
                 <option value="cherry">Cherry</option>
@@ -149,7 +150,7 @@
         </label>
         <label>
             Annat:
-            <select name="tags">
+            <select id="tags-other" name="tags">
                 <option value="apple">Apple</option>
                 <option value="banana">Banana</option>
                 <option value="cherry">Cherry</option>
@@ -159,5 +160,39 @@
     </fieldset>
     <button type="submit">Hitta Honung</button>
 </form>
+<script>
+    tags = this.tags || []
+    let sales_method = document.getElementById("tags-sales-method");
+    sales_method.innerHTML = "";
+    sales_method.add(new Option())
+
+    let types = document.getElementById("tags-type");
+    types.innerHTML = "";
+    types.add(new Option())
+
+    let other = document.getElementById("tags-other");
+    other.innerHTML = "";
+    other.add(new Option())
+
+    tags.forEach(({name, category, description}) => {
+        if(category === "sales_method") {
+            sales_method.add(new Option(
+                name,
+                name,
+            ))
+        } else if(category === "type") {
+            types.add(new Option(
+                name,
+                name,
+            ))
+        } else {
+            other.add(new Option(
+                name,
+                name,
+            ))
+        }
+    })
+
+</script>
 </body>
 </html>
