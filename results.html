@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Sök resultat</title>
+</head>
+<body>
+
+<script>
+
+    const tags_from_url = new URLSearchParams(window.location.search)
+        .getAll('tags');
+
+    if (tagsList.length > 0) {
+        document.body.innerHTML += '<h2>Tags:</h2><ul>' +
+            tagsList.map(tag => '<li>' + tag + '</li>').join('') +
+            '</ul>';
+    }
+
+</script>
+</body>
+</html>
