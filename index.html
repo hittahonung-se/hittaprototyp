@@ -56,10 +56,12 @@
         }
 
         form {
+            position: relative;
             padding: 25px;
             margin-top: 100px;
-            margin-left: 280px;
-            width: 600px;
+            margin-left: 200px;
+            min-width: 600px;
+            max-width: 800px;
             background-color: #f9f6f0;
             color: #4c5e2a;
             border: solid 6px #4c5e2a;
@@ -112,6 +114,15 @@
             box-sizing: border-box;
         }
 
+        img.bee-badge-right {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+        }
     </style>
     <script src="tags.js"></script>
 </head>
@@ -128,6 +139,7 @@
     </nav>
 </header>
 <form method="get" action="results.html">
+    <img class="bee-badge-right" src="bee.svg">
     <label>Var vill du hitta honung?<br><input type="text"></label>
     <fieldset>
         <label>
