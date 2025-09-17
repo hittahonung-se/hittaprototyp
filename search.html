@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>hittahonung.se</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <style>
+        body {
+            background-image: url("autumn.svg");
+            background-size: 1920px 1080px;
+            margin: 0;
+            padding: 0;
+            font-family: 'jost', sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 32px;
+        }
+
+        header {
+            height: 60px;
+            padding: 4px;
+            background-color: #ffe39a;
+            color: #4c5e2a;
+            border-bottom: solid 6px #917440;
+            line-height: 60px;
+
+            > * {
+                display: inline-block;
+                vertical-align: middle;
+
+            }
+
+            > nav {
+                float: right;
+                padding-right: 0.5em;
+            }
+
+            > nav > ul {
+                margin: 0;
+                padding: 0;
+
+                > li {
+                    margin-left: 0.5em;
+                    display: inline-block;
+
+                    > a {
+                        color: #4c5e2a;
+                        text-decoration: none;
+
+                    }
+                }
+            }
+
+            .brand {
+            }
+        }
+
+        form {
+            position: relative;
+            padding: 25px;
+            margin-top: 100px;
+            margin-left: 200px;
+            min-width: 600px;
+            max-width: 800px;
+            background-color: #f9f6f0;
+            color: #4c5e2a;
+            border: solid 6px #4c5e2a;
+            border-radius: 15px;
+            font-size: 43px;
+            font-weight: 600;
+
+            > * {
+                margin-bottom: 1.5em;
+                margin-top: 1.5em;
+            }
+
+            button {
+                width: 100%;
+                border-radius: 10px;
+                color: #f9f6f0;
+                background-color: #4c5e2a;
+                border: none;
+                padding: 0.5em;
+                font-size: 30px;
+                font-weight: 600;
+            }
+
+            fieldset {
+                padding: 0;
+                border: none;
+                font-size: 30px;
+                display: flex;
+                gap: 10px;
+                font-weight: 600;
+            }
+
+            fieldset > label {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+        }
+
+        input, select {
+            background-color: #f9f6f0;
+            color: #4c5e2a;
+            border: solid 6px #4c5e2a;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        img.bee-badge-right {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .tags {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: inline-block;
+            }
+        }
+
+        .tag {
+            border: 6px solid #6796b3;
+            border-radius: 10px;
+            padding: 1px 3px;
+            margin: 6px;
+            cursor: pointer;
+            text-transform: capitalize;
+            background-color: #dfe7ed;
+
+            &:has(input:checked) {
+                background-color: #6796b3;
+                color: #dfe7ed;
+            }
+
+            input {
+                display: none;
+            }
+        }
+    </style>
+    <script src="tags.js"></script>
+    <script src="keepers.js"></script>
+</head>
+<body>
+<header>
+    <img src="bee.svg" alt="ett ritat bi" width="60" height="60">
+    <span class="brand">HittaHonung.se</span>
+    <nav>
+        <ul>
+            <li><a href="#">Om Honug</a></li>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Logga in</a></li>
+        </ul>
+    </nav>
+</header>
+<form method="get" action="results.html">
+    <img class="bee-badge-right" src="bee2.svg">
+    <label>
+        Var vill du hitta honung?<br>
+        <select name="location">
+            <option></option>
+            <option>Hisings backa</option>
+            <option>Båstad</option>
+            <option>Södra Stensdalen</option>
+            <option>Angered</option>
+            <option>Göteborg</option>
+            <option>Jonsered</option>
+            <option>Kållered</option>
+            <option>Landvetter</option>
+            <option>Kungälv</option>
+            <option>Tuve</option>
+            <option>Mölndal</option>
+            <option>Partille</option>
+            <option>Henån</option>
+        </select>
+    </label>
+    <fieldset>
+        <legend>Välj taggar att söka på:</legend>
+    <ul class="tags">
+
+    </ul>
+    <script>
+        tags = this.tags || []
+        let html_tags = document.querySelector(".tags");
+        tags.forEach(({name, category, description}) => {
+            html_tags.innerHTML += `<li class="tag" title="${description}"><label><input type="checkbox" name="tags" value="${name}">#${name}</label></li>`
+        })
+    </script>
+    </fieldset>
+    <button type="submit">Hitta Honung</button>
+</form>
+<script>
+    tags = this.tags || []
+    let sales_method = document.getElementById("tags-sales-method");
+    sales_method.innerHTML = "";
+    sales_method.add(new Option())
+
+    let types = document.getElementById("tags-type");
+    types.innerHTML = "";
+    types.add(new Option())
+
+    let other = document.getElementById("tags-other");
+    other.innerHTML = "";
+    other.add(new Option())
+
+    tags.forEach(({name, category, description}) => {
+        if (category === "sales_method") {
+            sales_method.add(new Option(
+                name,
+                name,
+            ))
+        } else if (category === "type") {
+            types.add(new Option(
+                name,
+                name,
+            ))
+        } else {
+            other.add(new Option(
+                name,
+                name,
+            ))
+        }
+    })
+
+</script>
+</body>
+</html>
