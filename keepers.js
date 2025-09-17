@@ -1,4 +1,4 @@
-keppers = [
+keepers = [
         {
             name: "Gyllene Droppen Honung AB",
             tags: ["Yrkesbiodlare", "Gårdsbutik", "Ljunghonung", "Kakhonung"],
