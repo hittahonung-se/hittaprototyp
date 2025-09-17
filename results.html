@@ -83,6 +83,18 @@
     keepers.forEach(keeper => {
         let template = result.cloneNode(true);
         template.querySelector('.result-picture').src = keeper.picture;
+        template.querySelector('.result-name').innerText = keeper.name;
+        template.querySelector('.result-location').innerText = keeper.location;
+        template.querySelector('.result-link').innerText = keeper.link;
+        template.querySelector('.result-link').href = keeper.link;
+        let tags = template.querySelector('.tags');
+        let tag = template.querySelector('.tag');
+        keeper.tags.forEach(name=>{
+            let tag_template = tag.cloneNode(true)
+            tag_template.querySelector(".tag-name").innerText=name
+            tags.appendChild(tag_template)
+        })
+        tag.remove()
         results.appendChild(template)
     })
 </script>
