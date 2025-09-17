@@ -10,8 +10,18 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <script src="keepers.js"></script>
     <style>
+        body {
+            font-family: 'jost', sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+        }
         .tags {
             list-style: none;
             margin: 0;
@@ -41,16 +51,29 @@
         #results {
             list-style: none;
 
-            img {
-                width: 100px;
-                height: 100px;
+
+        }
+
+        .result {
+            display: flex;
+            align-items: flex-start;
+
+            img.result-picture {
+                width: 150px;
+                height: 150px;
                 border-radius: 50%;
-                margin-right: 10px;
-                float: left;
+                margin: 16px;
+                flex-shrink: 0;
 
                 /*dont stretch the image*/
                 object-fit: cover;
             }
+
+            .result-info {
+                flex: 1; /* Takes up remaining space dynamically */
+                min-width: 0; /* Allows content to shrink if needed */
+            }
+
         }
     </style>
 </head>
@@ -58,29 +81,35 @@
 <ul id="results">
     <li class="result">
         <img class="result-picture" src="" alt="profil bild"/>
-        <p class="result-name"></p>
-        <p>
-            <i class="fa fa-location-arrow" aria-hidden="true"></i>
-            <span class="result-location"></span>
-        </p>
-        <ul class="tags">
-            <li class="tag">#<span class="tag-name"></span></li>
-        </ul>
-        <p>
-            <i class="fa fa-link" aria-hidden="true"></i>
-            <a href="" class="result-link"></a>
-        </p>
+        <div class="result-info">
+            <p class="result-name"></p>
+            <p>
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                <span class="result-location"></span>
+            </p>
+            <ul class="tags">
+                <li class="tag">#<span class="tag-name"></span></li>
+            </ul>
+            <p>
+                <i class="fa fa-link" aria-hidden="true"></i>
+                <a href="" class="result-link"></a>
+            </p>
+        </div>
     </li>
 </ul>
 <script>
 
-    const tags_from_url = new URLSearchParams(window.location.search)
-        .getAll('tags');
+    const url_tags = new Set(new URLSearchParams(window.location.search)
+        .getAll('tags'));
+    url_tags.delete('')
     let results = document.getElementById('results');
     let result = document.querySelector('.result');
     result.remove();
     console.log(result)
-    keepers.forEach(keeper => {
+    keepers.filter(keeper => {
+        let keeper_tags = new Set(keeper.tags)
+        return url_tags.difference(keeper_tags).size === 0
+    }).forEach(keeper => {
         let template = result.cloneNode(true);
         template.querySelector('.result-picture').src = keeper.picture;
         template.querySelector('.result-name').innerText = keeper.name;
@@ -89,9 +118,9 @@
         template.querySelector('.result-link').href = keeper.link;
         let tags = template.querySelector('.tags');
         let tag = template.querySelector('.tag');
-        keeper.tags.forEach(name=>{
+        keeper.tags.forEach(name => {
             let tag_template = tag.cloneNode(true)
-            tag_template.querySelector(".tag-name").innerText=name
+            tag_template.querySelector(".tag-name").innerText = name
             tags.appendChild(tag_template)
         })
         tag.remove()
