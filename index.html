@@ -5,7 +5,8 @@
     <title>hittahonung.se</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
     <style>
         body {
             background-image: url("autumn.svg");
@@ -37,9 +38,11 @@
                 float: right;
                 padding-right: 0.5em;
             }
+
             > nav > ul {
                 margin: 0;
                 padding: 0;
+
                 > li {
                     margin-left: 0.5em;
                     display: inline-block;
@@ -51,6 +54,7 @@
                     }
                 }
             }
+
             .brand {
             }
         }
@@ -68,7 +72,8 @@
             border-radius: 15px;
             font-size: 43px;
             font-weight: 600;
-            >  * {
+
+            > * {
                 margin-bottom: 1.5em;
                 margin-top: 1.5em;
             }
@@ -100,6 +105,7 @@
             }
 
         }
+
         input, select {
             background-color: #f9f6f0;
             color: #4c5e2a;
@@ -141,7 +147,26 @@
 </header>
 <form method="get" action="results.html">
     <img class="bee-badge-right" src="bee2.svg">
-    <label>Var vill du hitta honung?<br><input type="text"></label>
+    <label>
+        Var vill du hitta honung?<br>
+        <input type="text" name="location" list="location-options">
+        <datalist id="location-options">
+            <option value="Hisings backa">
+            <option value="Båstad">
+            <option value="Södra Stensdalen">
+            <option value="Angered">
+            <option value="Göteborg">
+            <option value="Jonsered">
+            <option value="Kållered">
+            <option value="Landvetter">
+            <option value="Kungälv">
+            <option value="Tuve">
+            <option value="Mölndal">
+            <option value="Partille">
+            <option value="Henån">
+        </datalist>
+
+    </label>
     <fieldset>
         <label>
             Försäljning:
@@ -188,12 +213,12 @@
     other.add(new Option())
 
     tags.forEach(({name, category, description}) => {
-        if(category === "sales_method") {
+        if (category === "sales_method") {
             sales_method.add(new Option(
                 name,
                 name,
             ))
-        } else if(category === "type") {
+        } else if (category === "type") {
             types.add(new Option(
                 name,
                 name,
