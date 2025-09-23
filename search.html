@@ -197,21 +197,20 @@
     </label>
     <fieldset>
         <legend>Välj taggar att söka på:</legend>
-    <ul class="tags">
+        <ul class="tags">
 
-    </ul>
-    <script>
-        let html_tags = document.querySelector(".tags");
-        tags.forEach(({name, category, description}) => {
-            html_tags.innerHTML += `
+        </ul>
+        <script>
+            document.querySelector(".tags").innerHTML = tags.map(({name, description}) =>
+                `
 <li class="tag" title="${description}">
     <label>
         <input type="checkbox" name="tags" value="${name}">
         #${name}
     </label>
 </li>`
-        })
-    </script>
+            ).reduce((acc, cur) => acc + cur, "")
+        </script>
     </fieldset>
     <button type="submit">Hitta Honung</button>
 </form>
