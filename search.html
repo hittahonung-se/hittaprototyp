@@ -204,45 +204,17 @@
         tags = this.tags || []
         let html_tags = document.querySelector(".tags");
         tags.forEach(({name, category, description}) => {
-            html_tags.innerHTML += `<li class="tag" title="${description}"><label><input type="checkbox" name="tags" value="${name}">#${name}</label></li>`
+            html_tags.innerHTML += `
+<li class="tag" title="${description}">
+    <label>
+        <input type="checkbox" name="tags" value="${name}">
+        #${name}
+    </label>
+</li>`
         })
     </script>
     </fieldset>
     <button type="submit">Hitta Honung</button>
 </form>
-<script>
-    tags = this.tags || []
-    let sales_method = document.getElementById("tags-sales-method");
-    sales_method.innerHTML = "";
-    sales_method.add(new Option())
-
-    let types = document.getElementById("tags-type");
-    types.innerHTML = "";
-    types.add(new Option())
-
-    let other = document.getElementById("tags-other");
-    other.innerHTML = "";
-    other.add(new Option())
-
-    tags.forEach(({name, category, description}) => {
-        if (category === "sales_method") {
-            sales_method.add(new Option(
-                name,
-                name,
-            ))
-        } else if (category === "type") {
-            types.add(new Option(
-                name,
-                name,
-            ))
-        } else {
-            other.add(new Option(
-                name,
-                name,
-            ))
-        }
-    })
-
-</script>
 </body>
 </html>
