@@ -180,23 +180,48 @@
     <img class="bee-badge-right" src="bee2.svg">
     <label>
         Var vill du hitta honung?<br>
-        <select name="location">
-            <option></option>
-            <option>Hisings backa</option>
-            <option>Båstad</option>
-            <option>Södra Stensdalen</option>
-            <option>Angered</option>
-            <option>Göteborg</option>
-            <option>Jonsered</option>
-            <option>Kållered</option>
-            <option>Landvetter</option>
-            <option>Kungälv</option>
-            <option>Tuve</option>
-            <option>Mölndal</option>
-            <option>Partille</option>
-            <option>Henån</option>
-        </select>
+        <div style="display: flex; gap: 10px;">
+            <select name="county" id="county-select" style="flex: 1;">
+                <option value="">Välj län</option>
+            </select>
+            <select name="municipality" id="municipality-select" style="flex: 1;">
+                <option value="">Välj kommun</option>
+            </select>
+        </div>
     </label>
+
+    <script>
+        // Populate counties dropdown
+        const countySelect = document.getElementById('county-select');
+        const municipalitySelect = document.getElementById('municipality-select');
+
+        // Add counties to dropdown
+        counties.forEach(county => {
+            const option = document.createElement('option');
+            option.value = county.county_code;
+            option.textContent = county.county_name;
+            countySelect.appendChild(option);
+        });
+
+        // Handle county selection change
+        countySelect.addEventListener('change', function () {
+            // Clear municipalities
+            municipalitySelect.innerHTML = '<option value="">Välj kommun</option>';
+
+            if (this.value) {
+                // Filter municipalities by selected county
+                // Add filtered municipalities to dropdown
+                municipalities
+                    .filter(municipality => municipality.county_code == this.value)
+                    .forEach(municipality => {
+                        const option = document.createElement('option');
+                        option.value = municipality.municipality_name;
+                        option.textContent = municipality.municipality_name;
+                        municipalitySelect.appendChild(option);
+                    });
+            }
+        });
+    </script>
     <fieldset>
         <legend>Välj taggar att söka på:</legend>
         <ul class="tags">
