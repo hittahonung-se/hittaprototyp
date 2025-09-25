@@ -294,12 +294,14 @@
     const municipalitySelect = document.getElementById('municipality-select');
 
     // Add counties to dropdown
-    counties.forEach(county => {
-        const option = document.createElement('option');
-        option.value = county.county_code;
-        option.textContent = county.county_name;
-        countySelect.appendChild(option);
-    });
+    counties
+        .sort((a, b) => a.county_name.localeCompare(b.county_name))
+        .forEach(county => {
+            const option = document.createElement('option');
+            option.value = county.county_code;
+            option.textContent = county.county_name;
+            countySelect.appendChild(option);
+        });
 
     // Handle county selection change
     countySelect.addEventListener('change', function () {
@@ -311,6 +313,7 @@
             // Add filtered municipalities to dropdown
             municipalities
                 .filter(municipality => municipality.county_code == this.value)
+                .sort((a, b) => a.municipality_name.localeCompare(b.municipality_name))
                 .forEach(municipality => {
                     const option = document.createElement('option');
                     option.value = municipality.municipality_name;
@@ -325,7 +328,7 @@
     municipalitySelect.addEventListener('change', filterResults);
 
     // Add event listeners to all tag checkboxes
-    document.addEventListener('change', function(e) {
+    document.addEventListener('change', function (e) {
         if (e.target.name === 'tags') {
             filterResults();
         }
@@ -334,7 +337,7 @@
     function filterResults() {
         const selectedMunicipality = municipalitySelect.value;
         const selectedTags = new Set();
-        
+
         // Get all checked tags
         document.querySelectorAll('input[name="tags"]:checked').forEach(checkbox => {
             selectedTags.add(checkbox.value);
@@ -344,11 +347,11 @@
         const filteredKeepers = keepers.filter(keeper => {
             // Filter by location (municipality)
             const locationMatch = !selectedMunicipality || keeper.location === selectedMunicipality;
-            
+
             // Filter by tags (keeper must have ALL selected tags)
             const keeperTags = new Set(keeper.tags);
             const tagsMatch = selectedTags.size === 0 || [...selectedTags].every(tag => keeperTags.has(tag));
-            
+
             return locationMatch && tagsMatch;
         });
 
@@ -367,7 +370,7 @@
         filteredKeepers.forEach(keeper => {
             const resultElement = document.createElement('li');
             resultElement.className = 'result';
-            
+
             resultElement.innerHTML = `
                 <img class="result-picture" src="${keeper.picture}" alt="profil bild"/>
                 <div class="result-info">
@@ -385,7 +388,7 @@
                     </p>
                 </div>
             `;
-            
+
             resultsContainer.appendChild(resultElement);
         });
     }
