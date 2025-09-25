@@ -7,6 +7,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+            integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
     <style>
         body {
             background-image: url("autumn.svg");
@@ -158,6 +165,77 @@
                 display: none;
             }
         }
+
+        #results {
+            list-style: none;
+            padding: 0;
+            margin: 50px 200px 0 200px;
+        }
+
+        .result {
+            display: flex;
+            align-items: flex-start;
+            width: 600px;
+            border: solid 6px #4c5e2a;
+            margin: 1em 0;
+            border-radius: 15px;
+            padding-right: 1em;
+            background-color: #f9f6f0;
+
+            img.result-picture {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                margin: 16px;
+                flex-shrink: 0;
+
+                /*dont stretch the image*/
+                object-fit: cover;
+            }
+
+            .result-info {
+                flex: 1; /* Takes up remaining space dynamically */
+                min-width: 0; /* Allows content to shrink if needed */
+
+                .result-name {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 16px 0 8px 0;
+                    color: #4c5e2a;
+                }
+
+                p {
+                    font-size: 18px;
+                    margin: 8px 0;
+                    color: #4c5e2a;
+                }
+
+                .result-link {
+                    color: #4c5e2a;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                .tags .tag {
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    padding: 1px 3px;
+                    margin: 2px;
+                    font-size: 14px;
+                    background-color: #dfe7ed;
+                }
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            color: #4c5e2a;
+            font-size: 24px;
+            margin: 50px 0;
+        }
     </style>
     <script src="tags.js"></script>
     <script src="keepers.js"></script>
@@ -176,7 +254,7 @@
         </ul>
     </nav>
 </header>
-<form method="get" action="results.html">
+<form>
     <img class="bee-badge-right" src="bee2.svg">
     <label>
         Var vill du hitta honung?<br>
@@ -189,39 +267,6 @@
             </select>
         </div>
     </label>
-
-    <script>
-        // Populate counties dropdown
-        const countySelect = document.getElementById('county-select');
-        const municipalitySelect = document.getElementById('municipality-select');
-
-        // Add counties to dropdown
-        counties.forEach(county => {
-            const option = document.createElement('option');
-            option.value = county.county_code;
-            option.textContent = county.county_name;
-            countySelect.appendChild(option);
-        });
-
-        // Handle county selection change
-        countySelect.addEventListener('change', function () {
-            // Clear municipalities
-            municipalitySelect.innerHTML = '<option value="">Välj kommun</option>';
-
-            if (this.value) {
-                // Filter municipalities by selected county
-                // Add filtered municipalities to dropdown
-                municipalities
-                    .filter(municipality => municipality.county_code == this.value)
-                    .forEach(municipality => {
-                        const option = document.createElement('option');
-                        option.value = municipality.municipality_name;
-                        option.textContent = municipality.municipality_name;
-                        municipalitySelect.appendChild(option);
-                    });
-            }
-        });
-    </script>
     <fieldset>
         <legend>Välj taggar att söka på:</legend>
         <ul class="tags">
@@ -239,7 +284,114 @@
             ).reduce((acc, cur) => acc + cur, "")
         </script>
     </fieldset>
-    <button type="submit">Hitta Honung</button>
 </form>
+
+<ul id="results"></ul>
+
+<script>
+    // Populate counties dropdown
+    const countySelect = document.getElementById('county-select');
+    const municipalitySelect = document.getElementById('municipality-select');
+
+    // Add counties to dropdown
+    counties.forEach(county => {
+        const option = document.createElement('option');
+        option.value = county.county_code;
+        option.textContent = county.county_name;
+        countySelect.appendChild(option);
+    });
+
+    // Handle county selection change
+    countySelect.addEventListener('change', function () {
+        // Clear municipalities
+        municipalitySelect.innerHTML = '<option value="">Välj kommun</option>';
+
+        if (this.value) {
+            // Filter municipalities by selected county
+            // Add filtered municipalities to dropdown
+            municipalities
+                .filter(municipality => municipality.county_code == this.value)
+                .forEach(municipality => {
+                    const option = document.createElement('option');
+                    option.value = municipality.municipality_name;
+                    option.textContent = municipality.municipality_name;
+                    municipalitySelect.appendChild(option);
+                });
+        }
+        filterResults();
+    });
+
+    // Add event listener to municipality select
+    municipalitySelect.addEventListener('change', filterResults);
+
+    // Add event listeners to all tag checkboxes
+    document.addEventListener('change', function(e) {
+        if (e.target.name === 'tags') {
+            filterResults();
+        }
+    });
+
+    function filterResults() {
+        const selectedMunicipality = municipalitySelect.value;
+        const selectedTags = new Set();
+        
+        // Get all checked tags
+        document.querySelectorAll('input[name="tags"]:checked').forEach(checkbox => {
+            selectedTags.add(checkbox.value);
+        });
+
+        // Filter keepers
+        const filteredKeepers = keepers.filter(keeper => {
+            // Filter by location (municipality)
+            const locationMatch = !selectedMunicipality || keeper.location === selectedMunicipality;
+            
+            // Filter by tags (keeper must have ALL selected tags)
+            const keeperTags = new Set(keeper.tags);
+            const tagsMatch = selectedTags.size === 0 || [...selectedTags].every(tag => keeperTags.has(tag));
+            
+            return locationMatch && tagsMatch;
+        });
+
+        displayResults(filteredKeepers);
+    }
+
+    function displayResults(filteredKeepers) {
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = '';
+
+        if (filteredKeepers.length === 0) {
+            resultsContainer.innerHTML = '<li class="no-results">Inga biodlare hittades med dessa kriterier.</li>';
+            return;
+        }
+
+        filteredKeepers.forEach(keeper => {
+            const resultElement = document.createElement('li');
+            resultElement.className = 'result';
+            
+            resultElement.innerHTML = `
+                <img class="result-picture" src="${keeper.picture}" alt="profil bild"/>
+                <div class="result-info">
+                    <p class="result-name">${keeper.name}</p>
+                    <p>
+                        <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                        <span class="result-location">${keeper.location}</span>
+                    </p>
+                    <ul class="tags">
+                        ${keeper.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')}
+                    </ul>
+                    <p>
+                        <i class="fa fa-link" aria-hidden="true"></i>
+                        <a href="${keeper.link}" class="result-link" target="_blank">${keeper.link}</a>
+                    </p>
+                </div>
+            `;
+            
+            resultsContainer.appendChild(resultElement);
+        });
+    }
+
+    // Initial load - show all results
+    displayResults(keepers);
+</script>
 </body>
 </html>
