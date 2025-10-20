@@ -75,6 +75,7 @@
             background-image: url("top_background.svg"), url("top_background.png");
             background-size: 1920px 590px;
             background-position: center top;
+            background-repeat: no-repeat;
         }
 
         .content {
@@ -118,10 +119,10 @@
             fieldset {
                 padding: 0;
                 border: none;
-                font-size: 30px;
+                font-size: 13px;
                 display: flex;
                 gap: 10px;
-                font-weight: 600;
+                font-weight: 400;
             }
 
             fieldset > label {
@@ -134,10 +135,11 @@
 
         input, select {
             background-color: #f0eadb;
-            color: #4c5e2a;
+            color: #485238;
             border-radius: 10px;
             padding: 10px;
             font-size: 16px;
+            border: 0px solid transparent;
         }
 
         input[type="text"], select {
@@ -150,7 +152,7 @@
             padding: 0;
             position: absolute;
             top: -50px;
-            right: -50px;
+            right: -20px;
             width: 100px;
             height: 100px;
         }
@@ -166,17 +168,17 @@
         }
 
         .tag {
-            border: 6px solid #6796b3;
-            border-radius: 10px;
-            padding: 1px 3px;
+            border: 1px solid #37223a;
+            border-radius: 20px;
+            padding: 8px 10px;
             margin: 6px;
             cursor: pointer;
             text-transform: capitalize;
-            background-color: #dfe7ed;
+            background-color: #e19c31;
 
             &:has(input:checked) {
-                background-color: #6796b3;
-                color: #dfe7ed;
+                background-color: #37223a;
+                color: #f0eadb;
             }
 
             input {
@@ -188,6 +190,7 @@
             list-style: none;
             padding: 0;
             margin: 50px;
+            margin-top: 0px;
         }
 
         .result {
@@ -195,18 +198,17 @@
             align-items: flex-start;
             width: 45%;
             min-width: 600px;
-            border: solid 6px #4c5e2a;
             margin: 1em 0;
-            border-radius: 15px;
             padding-right: 1em;
-            background-color: #f9f6f0;
+            background-color: #37223a;
 
             img.result-picture {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
-                margin: 16px;
+                margin: 25px;
                 flex-shrink: 0;
+                border: 2px solid #e19c31;
 
                 /*dont stretch the image*/
                 object-fit: cover;
@@ -220,17 +222,17 @@
                     font-size: 24px;
                     font-weight: bold;
                     margin: 16px 0 8px 0;
-                    color: #4c5e2a;
+                    color: #f0eadb;
                 }
 
                 p {
                     font-size: 18px;
                     margin: 8px 0;
-                    color: #4c5e2a;
+                    color: #f0eadb;
                 }
 
                 .result-link {
-                    color: #4c5e2a;
+                    color: #f0eadb;
                     text-decoration: none;
 
                     &:hover {
@@ -239,19 +241,20 @@
                 }
 
                 .tags .tag {
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    padding: 1px 3px;
-                    margin: 2px;
-                    font-size: 14px;
-                    background-color: #dfe7ed;
+                    border: 1px solid #e19c31;
+                    border-radius: 20px;
+                    padding: 8px 10px;
+                    margin: 6px;
+                    font-size: 13px;
+                    background-color: #37223a;
+                    color: #e19c31;
                 }
             }
         }
 
         .no-results {
             text-align: center;
-            color: #4c5e2a;
+            color: #37223a;
             font-size: 24px;
             margin: 50px 0;
         }
@@ -277,7 +280,7 @@
 </div>
 <div class="content">
 <form>
-    <img class="bee-badge-right" src="bee2.svg">
+    <img class="bee-badge-right" src="bee_purple.svg">
     <p> Var vill du hitta honung? </p>
         <div style="display: flex; gap: 10px;">
             <select name="county" id="county-select" style="flex: 1;">
@@ -402,10 +405,6 @@
                     <ul class="tags">
                         ${keeper.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')}
                     </ul>
-                    <p>
-                        <i class="fa fa-link" aria-hidden="true"></i>
-                        <a href="${keeper.link}" class="result-link" target="_blank">${keeper.link}</a>
-                    </p>
                 </div>
             `;
 
