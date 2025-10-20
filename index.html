@@ -16,8 +16,10 @@
     />
     <style>
         body {
-            background-image: url("bg_hexagons.svg");
-            background-size: 1920px 967px;
+            background-image: url("top_background.svg"), url("top_background.png"), url("bg_hexagons.svg");
+            background-size: 1920px 590px, 1920px 590px, 1920px 967px;
+            background-position: center top;
+            background-repeat: no-repeat, no-repeat, repeat;
             margin: 0;
             padding: 0;
             font-family: 'jost', sans-serif;
@@ -70,13 +72,19 @@
             width: 100vw;
             height: 530px;
             background-color: #37223a;
+            background-image: url("top_background.svg"), url("top_background.png");
+            background-size: 1920px 590px;
+            background-position: center top;
         }
 
         .content {
             margin:auto;
             width: 1200px;
-            min-width: 1200px;
             background-color: #f0eadb;
+            background-position: -360px -530px, -360px -530px;
+            background-image: url("top_background.svg"), url("top_background.png");
+            background-size: 1920px 590px;
+            background-repeat: no-repeat;
         }
 
         form {
