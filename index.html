@@ -90,18 +90,20 @@
         form {
             position: relative;
             padding: 25px;
-            font-weight: 600;
-            font-size: 43px;
+            padding-top: 10px;
+            font-size: 24px;
+            color: #37223a;
+            text-align: center;
             background-color: #e19c31;
             width: 800px;
             margin: auto;
-            top: -100px;
+            top: -110px;
 
             > * {
-                margin-bottom: 1.5em;
-                margin-top: 1.5em;
+                margin-bottom: 0.5em;
+                margin-top: 0.5em;
             }
-
+            >p{margin-top: 1em;}
             button {
                 width: 100%;
                 border-radius: 10px;
@@ -276,8 +278,7 @@
 <div class="content">
 <form>
     <img class="bee-badge-right" src="bee2.svg">
-    <label>
-        Var vill du hitta honung?<br>
+    <p> Var vill du hitta honung? </p>
         <div style="display: flex; gap: 10px;">
             <select name="county" id="county-select" style="flex: 1;">
                 <option value="">Välj län</option>
@@ -286,7 +287,6 @@
                 <option value="">Välj kommun</option>
             </select>
         </div>
-    </label>
     <fieldset>
         <legend>Välj taggar att söka på:</legend>
         <ul class="tags">
